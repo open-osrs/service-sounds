@@ -26,6 +26,7 @@
 package service;
 
 import ch.qos.logback.classic.LoggerContext;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
@@ -39,11 +40,16 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
+import service.sounds.SoundsController;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableScheduling
@@ -91,6 +97,13 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 
 	public static void main(String[] args)
 	{
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("./sounds.json"));
+			Gson gson = new Gson();
+			SoundsController.sounds = gson.fromJson(bufferedReader, HashMap.class);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		SpringApplication.run(SpringBootWebApplication.class, args);
 	}
 
