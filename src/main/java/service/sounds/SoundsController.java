@@ -40,7 +40,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/sounds")
 public class SoundsController {
-    public static HashMap<Integer, int[]> sounds = new HashMap<>();
+    private HashMap<Integer, int[]> sounds = new HashMap<>();
     private Gson backupWriter = new GsonBuilder().setPrettyPrinting().create();
 
     @RequestMapping("/get")
@@ -64,7 +64,7 @@ public class SoundsController {
         sounds.put(npcid, newAnimations);
     }
 
-    @Scheduled(fixedDelay = 10 * 60 * 1000)
+    @Scheduled(fixedDelay = 1 * 60 * 1000)
     private void backupSounds()
     {
         try (FileWriter writer = new FileWriter(new File("./sounds.json")))
